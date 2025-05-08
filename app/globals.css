@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
+
+    /* Sidebar variables */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 142.1 76.2% 36.3%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
+
+    /* Sidebar variables */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 142.1 76.2% 36.3%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Prose styles for tutorial content */
+.prose {
+  @apply text-foreground;
+  max-width: 65ch;
+}
+
+.prose h1 {
+  @apply text-3xl font-bold tracking-tight mt-8 mb-4;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold mt-8 mb-4;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold mt-6 mb-3;
+}
+
+.prose p {
+  @apply my-4;
+}
+
+.prose ul {
+  @apply my-6 list-disc pl-6 space-y-2;
+}
+
+.prose ol {
+  @apply my-6 list-decimal pl-6 space-y-2;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose a {
+  @apply text-primary underline underline-offset-2 hover:text-primary/80;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-muted pl-4 italic my-4;
+}
+
+.prose code:not(pre code) {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.prose pre {
+  @apply bg-muted p-4 rounded-md overflow-x-auto my-4;
+}
+
+.prose img {
+  @apply rounded-md my-8 mx-auto;
+}
+
+.prose .lead {
+  @apply text-xl text-muted-foreground;
+}
+
+.dark .prose {
+  @apply text-foreground;
+}
+
+/* Sidebar adjustments */
+.sidebar-expanded main {
+  @apply md:ml-[var(--sidebar-width)];
+  transition: margin-left 0.2s ease-in-out;
+}
+
+.sidebar-collapsed main {
+  @apply md:ml-[var(--sidebar-width-icon)];
+  transition: margin-left 0.2s ease-in-out;
+}
+
+/* Ensure content doesn't get hidden under the sidebar */
+main {
+  @apply p-4 md:p-6;
+  transition: margin-left 0.2s ease-in-out;
+}
+
+/* Add these styles at the end of the file */
+
+/* Minimalist sidebar styles */
+.minimalist-sidebar {
+  @apply bg-background/60 backdrop-blur-sm border-r border-border/50;
+  height: calc(100vh - 3.5rem); /* Account for navbar height */
+}
+
+.minimalist-sidebar [data-sidebar="sidebar"] {
+  @apply bg-transparent shadow-none;
+}
+
+.minimalist-sidebar [data-sidebar="menu-button"] {
+  @apply hover:bg-background/80 data-[active=true]:bg-background/80;
+}
+
+.minimalist-sidebar [data-sidebar="group-label"] {
+  @apply text-muted-foreground/80 font-normal;
+}
