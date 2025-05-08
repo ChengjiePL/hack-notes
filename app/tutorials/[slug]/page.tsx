@@ -1,13 +1,20 @@
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { CodeBlock } from "@/components/code-block"
-import { tutorials } from "@/data/tutorials"
-import { notFound } from "next/navigation"
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { CodeBlock } from "@/components/code-block";
+import { tutorials } from "@/data/tutorials";
+import { notFound } from "next/navigation";
+
+// Add generateStaticParams function to pre-generate all tutorial pages at build time
+export function generateStaticParams() {
+  return tutorials.map((tutorial) => ({
+    slug: tutorial.slug,
+  }));
+}
 
 export default function TutorialPage({ params }: { params: { slug: string } }) {
-  const tutorial = tutorials.find((t) => t.slug === params.slug)
+  const tutorial = tutorials.find((t) => t.slug === params.slug);
 
   if (!tutorial) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -34,7 +41,12 @@ export default function TutorialPage({ params }: { params: { slug: string } }) {
           <div key={index}>
             {section.type === "heading" && <h2>{section.content}</h2>}
             {section.type === "paragraph" && <p>{section.content}</p>}
-            {section.type === "code" && <CodeBlock code={section.content} language={section.language || "bash"} />}
+            {section.type === "code" && (
+              <CodeBlock
+                code={section.content}
+                language={section.language || "bash"}
+              />
+            )}
             {section.type === "list" && (
               <ul>
                 {section.items.map((item, i) => (
@@ -46,5 +58,5 @@ export default function TutorialPage({ params }: { params: { slug: string } }) {
         ))}
       </article>
     </div>
-  )
+  );
 }
