@@ -1,21 +1,40 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  // Add this line - replace 'repository-name' with your actual repository name
-  basePath: process.env.NODE_ENV === 'production' ? '/hack-notes' : '',
-  // This ensures assets use the correct path
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/hack-notes/' : '',
+  // Enable static exports for GitHub Pages
+  output: "export",
+
+  // Set the base path for GitHub Pages
+  basePath: "/hack-notes",
+  assetPrefix: "/hack-notes",
+
+  // Configure image optimization
   images: {
-    unoptimized: true,
+    unoptimized: true, // Required for static export
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
-  trailingSlash: true,
+
+  // Disable unnecessary features for static sites
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
+
+  // Optimize bundle size
+  swcMinify: true,
+
+  // Add webpack optimization
+  webpack: (config) => {
+    // This helps reduce bundle size
+    config.optimization.minimize = true;
+    return config;
+  },
 };
 
 export default nextConfig;
-
