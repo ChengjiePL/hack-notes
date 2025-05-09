@@ -34,6 +34,10 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 142.1 76.2% 36.3%;
+
+    /* Define sidebar widths as CSS variables */
+    --sidebar-width: 16rem;
+    --sidebar-width-icon: 3rem;
   }
 
   .dark {
@@ -81,7 +85,8 @@
 /* Prose styles for tutorial content */
 .prose {
   @apply text-foreground;
-  max-width: 65ch;
+  width: 100%;
+  max-width: 100%;
 }
 
 .prose h1 {
@@ -140,39 +145,15 @@
   @apply text-foreground;
 }
 
-/* Modify the sidebar adjustment styles to ensure proper content scaling */
-/* Fixed the spacing between Tailwind classes */
-.sidebar-expanded main {
-  margin-left: calc(var(--sidebar-width) / 2); /* Reduce margin */
-  width: auto;
-  max-width: calc(100% - calc(var(--sidebar-width) / 2)); /* Adjust max-width */
-  transition:
-    margin-left 0.2s ease-in-out,
-    width 0.2s ease-in-out;
+/* Layout adjustments for sidebar states */
+body {
+  overflow-x: hidden;
 }
 
-.sidebar-collapsed main {
-  margin-left: var(--sidebar-width-icon);
-  width: auto;
-  max-width: calc(100% - var(--sidebar-width-icon));
-  transition:
-    margin-left 0.2s ease-in-out,
-    width 0.2s ease-in-out;
-}
-
-/* Use regular CSS instead of @apply to avoid syntax errors */
-@media (max-width: 768px) {
-  .sidebar-expanded main,
-  .sidebar-collapsed main {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-/* Ensure content doesn't get hidden under the sidebar */
+/* Main content adjustments */
 main {
-  padding: 1rem;
   width: 100%;
+  padding: 1rem;
   transition:
     margin-left 0.2s ease-in-out,
     width 0.2s ease-in-out;
@@ -182,9 +163,49 @@ main {
   main {
     padding: 1.5rem;
   }
+
+  .sidebar-expanded main {
+    margin-left: calc(var(--sidebar-width) / 2); /* Reduce margin */
+    width: auto;
+    max-width: calc(
+      100% - calc(var(--sidebar-width) / 2)
+    ); /* Adjust max-width */
+    transition:
+      margin-left 0.2s ease-in-out,
+      width 0.2s ease-in-out;
+  }
+
+  .sidebar-collapsed main {
+    margin-left: var(--sidebar-width-icon);
+    width: calc(100% - var(--sidebar-width-icon));
+  }
 }
 
-/* Add these styles at the end of the file */
+/* Container adjustments */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Ensure all content containers fill the available width */
+.container,
+article,
+.prose,
+.space-y-6,
+.space-y-8 {
+  width: 100%;
+  max-width: 100%;
+}
 
 /* Minimalist sidebar styles */
 .minimalist-sidebar {
@@ -214,27 +235,4 @@ main {
 .minimalist-sidebar [data-sidebar="group-label"] {
   color: rgba(var(--muted-foreground), 0.8);
   font-weight: normal;
-}
-
-/* Ensure container adapts to sidebar state */
-.container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  max-width: 100%;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  transition: width 0.2s ease-in-out;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-.sidebar-expanded .container,
-.sidebar-collapsed .container {
-  max-width: 100%;
 }

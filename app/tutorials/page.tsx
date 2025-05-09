@@ -1,30 +1,62 @@
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { SearchBar } from "@/components/search-bar"
-import { TutorialCard } from "@/components/tutorial-card"
-import { tutorials } from "@/data/tutorials"
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { CodeBlock } from "@/components/code-block";
+import { tutorials } from "@/data/tutorials";
+import { notFound } from "next/navigation";
 
-export default function TutorialsPage() {
+// Add generateStaticParams function to pre-generate all tutorial pages at build time
+export function generateStaticParams() {
+  return tutorials.map((tutorial) => ({
+    slug: tutorial.slug,
+  }));
+}
+
+export default function TutorialPage({ params }: { params: { slug: string } }) {
+  const tutorial = tutorials.find((t) => t.slug === params.slug);
+
+  if (!tutorial) {
+    notFound();
+  }
+
   return (
-    <div className="container mx-auto space-y-6">
+    <div className="container mx-auto space-y-6 w-full">
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
           { label: "Tutorials", href: "/tutorials" },
+          { label: tutorial.title, href: `/tutorials/${tutorial.slug}` },
         ]}
       />
 
-      <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Ethical Hacking Tutorials</h1>
-        <p className="text-muted-foreground">Step-by-step guides to help you learn ethical hacking techniques.</p>
-      </div>
+      <article className="prose prose-stone dark:prose-invert w-full max-w-full">
+        <h1>{tutorial.title}</h1>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Difficulty: {tutorial.difficulty}</span>
+          <span>•</span>
+          <span>Published: {tutorial.publishedAt}</span>
+        </div>
 
-      <SearchBar placeholder="Search tutorials..." clientSideFilter="tutorials" />
+        <p className="lead">{tutorial.description}</p>
 
-      <div className="grid gap-6 md:grid-cols-2" id="tutorials-grid">
-        {tutorials.map((tutorial) => (
-          <TutorialCard key={tutorial.id} tutorial={tutorial} />
+        {tutorial.content.map((section, index) => (
+          <div key={index} className="w-full">
+            {section.type === "heading" && <h2>{section.content}</h2>}
+            {section.type === "paragraph" && <p>{section.content}</p>}
+            {section.type === "code" && (
+              <CodeBlock
+                code={section.content}
+                language={section.language || "bash"}
+              />
+            )}
+            {section.type === "list" && (
+              <ul>
+                {section.items.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         ))}
-      </div>
+      </article>
     </div>
-  )
+  );
 }
