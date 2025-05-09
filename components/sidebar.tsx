@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import Link from "next/link"
+import Link from "next/link";
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -11,9 +11,9 @@ import {
   useSidebar,
   SidebarGroup,
   SidebarGroupLabel,
-} from "@/components/ui/sidebar"
-import { Home, Terminal, BookOpen, BookText, Info, Shield } from "lucide-react"
-import { useEffect } from "react"
+} from "@/components/ui/sidebar";
+import { Home, Terminal, BookOpen, BookText, Info, Shield } from "lucide-react";
+import { useEffect } from "react";
 
 const sidebarItems = [
   { label: "Home", href: "/", icon: Home },
@@ -21,24 +21,31 @@ const sidebarItems = [
   { label: "Tutorials", href: "/tutorials", icon: BookOpen },
   { label: "Glossary", href: "/glossary", icon: BookText },
   { label: "About", href: "/about", icon: Info },
-]
+];
 
 export function Sidebar() {
-  const { state } = useSidebar()
+  const { state } = useSidebar();
 
   // Add class to body when sidebar is expanded/collapsed
   useEffect(() => {
-    document.body.classList.toggle("sidebar-expanded", state === "expanded")
-    document.body.classList.toggle("sidebar-collapsed", state === "collapsed")
+    document.body.classList.toggle("sidebar-expanded", state === "expanded");
+    document.body.classList.toggle("sidebar-collapsed", state === "collapsed");
+
+    // Force layout recalculation when sidebar state changes
+    window.dispatchEvent(new Event("resize"));
 
     return () => {
-      document.body.classList.remove("sidebar-expanded")
-      document.body.classList.remove("sidebar-collapsed")
-    }
-  }, [state])
+      document.body.classList.remove("sidebar-expanded");
+      document.body.classList.remove("sidebar-collapsed");
+    };
+  }, [state]);
 
   return (
-    <ShadcnSidebar collapsible="icon" variant="floating" className="minimalist-sidebar fixed top-14">
+    <ShadcnSidebar
+      collapsible="icon"
+      variant="floating"
+      className="minimalist-sidebar sticky top-14"
+    >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2 px-2">
@@ -61,5 +68,5 @@ export function Sidebar() {
       </SidebarContent>
       <SidebarRail />
     </ShadcnSidebar>
-  )
+  );
 }

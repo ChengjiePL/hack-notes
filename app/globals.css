@@ -38,6 +38,7 @@
     /* Define sidebar widths as CSS variables */
     --sidebar-width: 16rem;
     --sidebar-width-icon: 3rem;
+    --navbar-height: 3.5rem;
   }
 
   .dark {
@@ -164,6 +165,7 @@ main {
     padding: 1.5rem;
   }
 
+  /* Using your custom adjustment for sidebar-expanded */
   .sidebar-expanded main {
     margin-left: calc(var(--sidebar-width) / 2); /* Reduce margin */
     width: auto;
@@ -207,12 +209,28 @@ article,
   max-width: 100%;
 }
 
+/* App layout structure */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
 /* Minimalist sidebar styles */
 .minimalist-sidebar {
   background-color: rgba(var(--background), 0.6);
   backdrop-filter: blur(4px);
   border-right: 1px solid rgba(var(--border), 0.5);
-  height: calc(100vh - 3.5rem); /* Account for navbar height */
+  max-height: calc(100vh - var(--navbar-height));
+  overflow-y: auto;
+  position: sticky;
+  top: var(--navbar-height);
 }
 
 .minimalist-sidebar [data-sidebar="sidebar"] {
@@ -235,4 +253,11 @@ article,
 .minimalist-sidebar [data-sidebar="group-label"] {
   color: rgba(var(--muted-foreground), 0.8);
   font-weight: normal;
+}
+
+/* Footer styles */
+footer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
 }
